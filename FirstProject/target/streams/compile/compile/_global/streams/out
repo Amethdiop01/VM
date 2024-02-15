@@ -1,0 +1,4 @@
+[0m[[0m[31merror[0m] [0m[0m/home/ubuntu/FirstProject/src/main/scala/Energy.scala:30:67: value reduce is not a member of org.apache.spark.sql.Column[0m
+[0m[[0m[31merror[0m] [0m[0m      .withColumn("Renewable (MW)", array(energy.map(col(_)): _*).reduce((x, y) => x + y))[0m
+[0m[[0m[31merror[0m] [0m[0m                                                                  ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

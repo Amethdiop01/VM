@@ -1,0 +1,40 @@
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.functions.col // we need to import this function 
+
+object Energy{
+  def main(args: Array[String]) {
+    val spark = SparkSession
+                  .builder()
+                  .appName("Energy")
+                  .getOrCreate()
+ 
+
+
+   val sub_temp = temp
+                      .filter(col("code_insee_region") === 24 || 
+                              col("code_insee_region") === 28)
+                      .
+
+    val energy = List("Eolien (MW)", "Solaire (MW)","Hydraulique (MW)", "Bioénergies (MW)")
+    val other = List("Date","Consommation (MW)","Code INSEE région")
+
+    val add_col = (x:org.apache.spark.sql.Column,y:org.apache.spark.sql.Column) => x+y
+
+    val sub_elec = spark.read
+                        .option("inferSchema","true")
+                        .option("header","true")
+                        .option("delimiter",";")
+                        .csv("energie.csv")
+                        .select((other ++ energy).map(col(_)): _*)
+                        .filter(
+                            col("Code INSEE région") === 24 || 
+                            col("Code INSEE région") === 28
+                        ).na.fill(0.0)
+                        .withColumn("Renewable (MW)",
+                        energy.map(col(_))
+                              .reduce(add_col(_,_)))
+                        .drop(energy : _* )
+
+
+  }
+}
